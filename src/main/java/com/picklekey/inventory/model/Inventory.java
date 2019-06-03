@@ -1,19 +1,20 @@
 package com.picklekey.inventory.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
 @Table(name="inventory")
-public class Inventory {
+public class Inventory implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="inventory_id")
 	private int id;
-	
-	@Column(name="inventory_name")
-	private String name;
+
+    @OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="ingredient_name", referencedColumnName = "ingredient_name")
+	private Ingredient ingredientName;
 	
 	@Column(name="inventory_amount")
 	private double amount;
@@ -23,31 +24,15 @@ public class Inventory {
 	
 	@Column(name="inventory_unit")
 	private String unit;
-	
-	/*@OneToMany(mappedBy = "pk.inventory",
-			cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	private List<SuppliedBy> suppliedBy;*/
+
     @Column(name="supplied_by")
     private String suppliedBy;
 
-	
-	/*@OneToMany(mappedBy = "pk.inventory",
-			cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	private List<UsedIn> usedIn;*/
-	// constructor
 	public Inventory() {}
-
-	public Inventory(String name, double amount, double unitCost, String unit) {
-		super();
-		this.name = name;
-		this.amount = amount;
-		this.unitCost = unitCost;
-		this.unit = unit;
-	}
 	
-	public Inventory(String name, double amount, double unitCost, String unit, String suppliedBy) {
+	public Inventory(Ingredient name, double amount, double unitCost, String unit, String suppliedBy) {
 		super();
-		this.name = name;
+		this.ingredientName = name;
 		this.amount = amount;
 		this.unitCost = unitCost;
 		this.unit = unit;
@@ -63,15 +48,15 @@ public class Inventory {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
+    public Ingredient getIngredientName() {
+        return ingredientName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setIngredientName(Ingredient ingredientName) {
+        this.ingredientName = ingredientName;
+    }
 
-	public double getAmount() {
+    public double getAmount() {
 		return amount;
 	}
 
@@ -103,25 +88,16 @@ public class Inventory {
 		this.suppliedBy = suppliedBy;
 	}
 	
-//	public List<UsedIn> getUsedIn() {
-//		return usedIn;
-//	}
-//
-//	public void setUsedIn(List<UsedIn> usedIn) {
-//		this.usedIn = usedIn;
-//	}
-	
-	// to string
-	@Override
-	public String toString() {
-		return "Inventory [id=" + id + ", name=" + name + ", amount=" + amount + ", unitCost=" + unitCost + ", unit="
-				+ unit + "]";
-	}
 
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "id=" + id +
+                ", ingredientName=" + ingredientName +
+                ", amount=" + amount +
+                ", unitCost=" + unitCost +
+                ", unit='" + unit + '\'' +
+                ", suppliedBy='" + suppliedBy + '\'' +
+                '}';
+    }
 }

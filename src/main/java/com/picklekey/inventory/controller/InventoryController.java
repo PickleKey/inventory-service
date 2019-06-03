@@ -1,6 +1,10 @@
 package com.picklekey.inventory.controller;
 
+import com.picklekey.inventory.model.Dish;
+import com.picklekey.inventory.model.Ingredient;
 import com.picklekey.inventory.model.Inventory;
+import com.picklekey.inventory.repository.DishRepository;
+import com.picklekey.inventory.repository.IngredientRepository;
 import com.picklekey.inventory.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -17,19 +21,48 @@ public class InventoryController {
 	@Autowired
 	private InventoryRepository inventoryRepository;
 
+	@Autowired
+    private DishRepository dishRepository;
+
+	@Autowired
+	private IngredientRepository ingredientRepository;
+
 	
 	@GetMapping("/list")
-	public List<Inventory> getAllInventories(Model theModel) {
+	public List<Inventory> getAllInventories() {
 		
 		// get inventory from service
 		System.out.println("controller getting inventoryList");
 		List<Inventory> inventoryList = inventoryRepository.findAll();
-		
-		// add inventory to the model
-		System.out.println("add to model");
-		theModel.addAttribute("inventoryList", inventoryList);
+
 		return inventoryList;
 	}
+
+    @GetMapping("/dishes")
+    public List<Dish> getAllDishes() {
+
+        // get inventory from service
+        System.out.println("controller getting dishList");
+        List<Dish> dishList = dishRepository.findAll();
+        return dishList;
+    }
+
+    @PostMapping("/addToInventory")
+    public String addToInventory(@RequestParam("ingredient_name") String ingredientName, @RequestParam("inventory_amount") double inventoryAmount,
+                                 @RequestParam("inventory_unitcost") double inventoryUnitCost, @RequestParam("inventory_unit") String inventoryUnit,
+                                 @RequestParam("suppliedBy") String suppliedBy) {
+        System.out.println("Getting data from request");
+
+        Ingredient ingredient = new Ingredient(ingredientName);
+        List<Ingredient> ingredientList = ingredientRepository.findIngredientByIngredientName(ingredientName);
+        if(ingredientList.isEmpty()) {
+            ingredientRepository.save(ingredient);
+        }
+        Inventory inventory = new Inventory(ingredient, inventoryAmount,inventoryUnitCost,inventoryUnit,suppliedBy);
+        inventoryRepository.save(inventory);
+
+        return "Saved to Inventory Table";
+    }
 	
 	/*@GetMapping("/suppliedBy")
 	public String suppliedBy(@RequestParam("inventoryId") int id, @RequestParam("inventoryUnit") String unit,
