@@ -56,11 +56,6 @@ public class Ingredient implements Serializable {
         this.inventories = inventories;
     }
 
-    /*public void addToInventory(Inventory inventory) {
-        this.inventories.add(inventory);
-        inventory.setIngredientName(this);
-    }*/
-
     @Override
     public String toString() {
         return "Ingredient{" +
