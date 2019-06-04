@@ -2,6 +2,8 @@ package com.picklekey.inventory.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="inventory")
@@ -12,7 +14,7 @@ public class Inventory implements Serializable {
 	@Column(name="inventory_id")
 	private int id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="ingredient_name", referencedColumnName = "ingredient_name")
 	private Ingredient ingredientName;
 	
@@ -28,7 +30,9 @@ public class Inventory implements Serializable {
     @Column(name="supplied_by")
     private String suppliedBy;
 
-	public Inventory() {}
+	public Inventory() {
+	    super();
+    }
 	
 	public Inventory(Ingredient name, double amount, double unitCost, String unit, String suppliedBy) {
 		super();

@@ -3,6 +3,8 @@ package com.picklekey.inventory.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -17,12 +19,17 @@ public class Ingredient implements Serializable {
     @Column(name="ingredient_name")
     private String ingredientName;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Inventory> inventories = new HashSet<>();
 
     public Ingredient() {
+        super();
     }
 
-    public Ingredient(String ingredientName) {
+    public Ingredient(String ingredientName, Set<Inventory> inventories) {
+        super();
         this.ingredientName = ingredientName;
+        this.inventories = inventories;
     }
 
     public int getId() {
@@ -40,6 +47,19 @@ public class Ingredient implements Serializable {
     public void setIngredientName(String ingredientName) {
         this.ingredientName = ingredientName;
     }
+
+    public Set<Inventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(Set<Inventory> inventories) {
+        this.inventories = inventories;
+    }
+
+    /*public void addToInventory(Inventory inventory) {
+        this.inventories.add(inventory);
+        inventory.setIngredientName(this);
+    }*/
 
     @Override
     public String toString() {
