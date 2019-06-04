@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/v1/inventory")
@@ -53,13 +55,21 @@ public class InventoryController {
                                  @RequestParam("suppliedBy") String suppliedBy) {
         System.out.println("Getting data from request");
 
-        Ingredient ingredient = new Ingredient(ingredientName);
-        List<Ingredient> ingredientList = ingredientRepository.findIngredientByIngredientName(ingredientName);
-        if(ingredientList.isEmpty()) {
-            ingredientRepository.save(ingredient);
-        }
-        Inventory inventory = new Inventory(ingredient, inventoryAmount,inventoryUnitCost,inventoryUnit,suppliedBy);
-        inventoryRepository.save(inventory);
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredientName(ingredientName);
+        Inventory inventory = new Inventory();
+        inventory.setUnitCost(inventoryUnitCost);
+        inventory.setUnit(inventoryUnit);
+        inventory.setAmount(inventoryAmount);
+        inventory.setSuppliedBy(suppliedBy);
+        inventory.setIngredientName(ingredient);
+
+        Set<Inventory> inventories = new HashSet<>();
+        inventories.add(inventory);
+
+        ingredient.setInventories(inventories);
+
+        ingredientRepository.save(ingredient);
 
         return "Saved to Inventory Table";
     }
