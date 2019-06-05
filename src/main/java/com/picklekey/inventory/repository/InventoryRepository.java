@@ -1,16 +1,16 @@
 package com.picklekey.inventory.repository;
 
 import com.picklekey.inventory.model.Inventory;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface InventoryRepository extends CrudRepository<Inventory, Long> {
+public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     List<Inventory> findAll();
 
-    //List<Inventory> getInventoriesBy(String name);
+    Inventory findAllById(int id);
 
 }
