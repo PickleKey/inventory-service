@@ -1,5 +1,7 @@
 package com.picklekey.inventory.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,6 +16,7 @@ public class Inventory implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="ingredient_name", referencedColumnName = "ingredient_name")
+    @JsonManagedReference
 	private Ingredient ingredientName;
 	
 	@Column(name="inventory_amount")
