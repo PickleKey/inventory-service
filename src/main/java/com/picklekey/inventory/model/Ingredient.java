@@ -1,6 +1,8 @@
 package com.picklekey.inventory.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,6 +22,7 @@ public class Ingredient implements Serializable {
     private String ingredientName;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<Inventory> inventories = new HashSet<>();
 
     public Ingredient() {
