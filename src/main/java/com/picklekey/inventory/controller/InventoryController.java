@@ -7,9 +7,9 @@ import com.picklekey.inventory.repository.DishRepository;
 import com.picklekey.inventory.repository.IngredientRepository;
 import com.picklekey.inventory.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +63,8 @@ public class InventoryController {
         inventory.setAmount(inventoryAmount);
         inventory.setSuppliedBy(suppliedBy);
         inventory.setIngredientName(ingredient);
+        inventory.setCreatedOn(LocalDateTime.now());
+        inventory.setUpdatedOn(LocalDateTime.now());
 
         Set<Inventory> inventories = new HashSet<>();
         inventories.add(inventory);
