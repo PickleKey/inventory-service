@@ -129,6 +129,8 @@ public class Inventory implements Serializable {
                 ", createdOn='" + createdOn + '\'' +
                 ", updatedOn='" + updatedOn + '\'' +
                 ", suppliedBy='" + suppliedBy + '\'' +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
                 '}';
     }
 }
