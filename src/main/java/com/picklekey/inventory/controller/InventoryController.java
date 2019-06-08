@@ -9,6 +9,7 @@ import com.picklekey.inventory.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -85,6 +86,30 @@ public class InventoryController {
         }
 
         return "Invalid id passed";
+    }
+
+    @PostMapping(value = "/updateInventory")
+    public Inventory updateInventory(@RequestParam("ingredient_id") int id, @RequestParam("inventory_amount") double inventoryAmount,
+                                              @RequestParam("inventory_unitcost") double inventoryUnitCost, @RequestParam("inventory_unit") String inventoryUnit,
+                                              @RequestParam("suppliedBy") String suppliedBy, HttpServletResponse response) {
+        System.out.println("Getting data from request");
+
+
+        Inventory inventory = inventoryRepository.findAllById(id);
+        if(inventory != null) {
+            inventory.setUnitCost(inventoryUnitCost);
+            inventory.setUnit(inventoryUnit);
+            inventory.setAmount(inventoryAmount);
+            inventory.setSuppliedBy(suppliedBy);
+            inventory.setUpdatedOn(LocalDateTime.now());
+
+            inventoryRepository.save(inventory);
+            return inventory;
+        }
+
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+        return null;
     }
 	
 
