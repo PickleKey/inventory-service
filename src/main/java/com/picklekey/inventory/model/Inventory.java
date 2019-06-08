@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="inventory")
@@ -31,18 +32,26 @@ public class Inventory implements Serializable {
     @Column(name="supplied_by")
     private String suppliedBy;
 
+    @Column(name="created_on")
+    private LocalDateTime createdOn;
+
+    @Column(name="updated_on")
+    private LocalDateTime updatedOn;
+
 	public Inventory() {
 	    super();
     }
-	
-	public Inventory(Ingredient name, double amount, double unitCost, String unit, String suppliedBy) {
-		super();
-		this.ingredientName = name;
-		this.amount = amount;
-		this.unitCost = unitCost;
-		this.unit = unit;
-		this.suppliedBy = suppliedBy;
-	}
+
+    public Inventory(Ingredient ingredientName, double amount, double unitCost, String unit, String suppliedBy, LocalDateTime createdOn, LocalDateTime updatedOn) {
+        super();
+	    this.ingredientName = ingredientName;
+        this.amount = amount;
+        this.unitCost = unitCost;
+        this.unit = unit;
+        this.suppliedBy = suppliedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+    }
 
 	// getters and setters
 	public int getId() {
@@ -92,7 +101,22 @@ public class Inventory implements Serializable {
 	public void setSuppliedBy(String suppliedBy) {
 		this.suppliedBy = suppliedBy;
 	}
-	
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
+    }
 
     @Override
     public String toString() {
@@ -102,6 +126,8 @@ public class Inventory implements Serializable {
                 ", amount=" + amount +
                 ", unitCost=" + unitCost +
                 ", unit='" + unit + '\'' +
+                ", createdOn='" + createdOn + '\'' +
+                ", updatedOn='" + updatedOn + '\'' +
                 ", suppliedBy='" + suppliedBy + '\'' +
                 '}';
     }
